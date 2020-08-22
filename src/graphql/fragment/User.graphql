@@ -1,0 +1,31 @@
+fragment user on User {
+  id
+  type
+  firstName
+  lastName
+  email
+  bookings {
+    id
+  }
+  orders {
+    id
+  }
+  appartments {
+    id
+    name
+    description
+    image
+    price
+    rooms
+    timeSlots {
+      id
+    }
+  }
+  vouchers {
+    id
+    name
+    price
+    variant
+    quantity
+  }
+}

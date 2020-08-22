@@ -1,0 +1,7 @@
+#import '../fragment/Voucher.graphql'
+
+query ListVouchers {
+  listVouchers {
+    ...voucher
+  }
+}

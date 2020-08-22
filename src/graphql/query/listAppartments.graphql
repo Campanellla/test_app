@@ -1,0 +1,7 @@
+#import '../fragment/Appartment.graphql'
+
+query ListAppartments {
+  listAppartments {
+    ...appartment
+  }
+}

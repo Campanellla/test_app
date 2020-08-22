@@ -1,0 +1,13 @@
+fragment voucher on Voucher {
+  id
+  owner {
+    id
+    firstName
+    lastName
+    email
+  }
+  name
+  price
+  variant
+  quantity
+}

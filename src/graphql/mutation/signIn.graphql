@@ -1,0 +1,6 @@
+mutation userSignIn($input: userSignInInput) {
+  signIn(input: $input) {
+    token
+    name
+  }
+}

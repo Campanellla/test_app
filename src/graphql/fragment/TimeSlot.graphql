@@ -1,0 +1,5 @@
+fragment timeslot on TimeSlot {
+  id
+  start
+  end
+}

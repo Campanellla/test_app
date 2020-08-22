@@ -1,0 +1,7 @@
+#import '../fragment/Appartment.graphql'
+
+mutation AddAppartment($input: addAppartmentInput!) {
+  addAppartment(input: $input) {
+    ...appartment
+  }
+}

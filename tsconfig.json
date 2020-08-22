@@ -1,0 +1,36 @@
+{
+  "compilerOptions": {
+    "allowJs": true,
+    "allowSyntheticDefaultImports": true,
+    "esModuleInterop": true,
+    "isolatedModules": true,
+    "jsx": "preserve",
+    "lib": ["ES2020", "DOM", "DOM.Iterable"],
+    "moduleResolution": "node",
+    "noEmit": true,
+    "strict": true,
+    "target": "esnext",
+    "baseUrl": "./",
+    "skipLibCheck": true,
+    "forceConsistentCasingInFileNames": true,
+    "module": "esnext",
+    "resolveJsonModule": true
+  },
+  "exclude": [
+    "node_modules",
+    ".babelrc.js",
+    ".eslintrc.js",
+    ".prettierrc.js",
+    "jest.config.js",
+    "jest.setup.js",
+    "next.config.js",
+    "routes.js",
+    "server.js"
+  ],
+  "include": ["./pages/*", "./src/custom.d.ts"],
+  "plugins": [
+    {
+      "name": "typescript-styled-plugin"
+    }
+  ]
+}

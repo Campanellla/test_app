@@ -1,0 +1,158 @@
+type Query {
+  currentUser: User
+
+  getAppartment(id: ID!): Appartment
+  getVoucher(id: ID!): Voucher
+
+  getBooking(id: ID!): Booking
+
+  getBookings(userID: ID): [Booking]
+  getOrders(userID: ID): [Order]
+
+  listAppartments: [Appartment]
+  listVouchers: [Voucher]
+}
+
+type Mutation {
+  makeBooking(input: makeBookingInput!): Booking
+  makeOrder(input: makeOrderInput!): Order
+
+  addUser(input: addUserInput!): User
+
+  addAppartment(input: addAppartmentInput!): Appartment
+  addVoucher(input: addVoucherInput!): Voucher
+
+  editAppartment(input: editAppartmentInput): Appartment
+  editVoucher(input: editVoucherInput): Voucher
+
+  signIn(input: userSignInInput): UserAuth
+  signUp(input: userSignUpInput): User
+}
+
+input editAppartmentInput {
+  id: ID!
+  name: String
+  description: String
+  image: String
+  price: Int
+  rooms: Int
+  timeSlots: [TimeSlotInput]
+}
+
+input editVoucherInput {
+  id: ID!
+  name: String!
+  price: Int!
+  variant: String!
+  quantity: Int
+}
+
+input addAppartmentInput {
+  name: String!
+  description: String
+  image: String
+  price: Int!
+  rooms: Int!
+  timeSlots: [TimeSlotInput]
+}
+
+input TimeSlotInput {
+  id: ID
+  start: String
+  end: String
+}
+
+input makeBookingInput {
+  userID: ID!
+  appartmentID: ID!
+  timeslot: ID!
+}
+
+input makeOrderInput {
+  userID: ID!
+  appartmentID: ID!
+  timeslot: ID!
+}
+
+input addVoucherInput {
+  name: String!
+  price: Int!
+  variant: String!
+  quantity: Int
+}
+
+input userSignUpInput {
+  type: String!
+  firstName: String!
+  lastName: String!
+  email: String!
+  password: String!
+}
+
+input addUserInput {
+  firstName: String!
+  lastName: String!
+  email: String!
+}
+
+type Appartment {
+  id: ID!
+  owner: User!
+  name: String!
+  description: String
+  image: String
+  price: Int!
+  rooms: Int!
+  timeSlots: [TimeSlot]
+}
+
+type Voucher {
+  id: ID!
+  owner: User!
+  name: String!
+  price: Int!
+  variant: String!
+  quantity: Int
+}
+
+type Booking {
+  id: ID!
+  appartment: Appartment!
+  timeSlot: TimeSlot!
+  buyer: User!
+}
+
+type Order {
+  id: ID!
+  voucher: Voucher!
+  buyer: User!
+}
+
+type User {
+  id: ID!
+  type: String!
+  firstName: String!
+  lastName: String!
+  email: String!
+  bookings: [Booking]
+  orders: [Order]
+  appartments: [Appartment]
+  vouchers: [Voucher]
+}
+
+type TimeSlot {
+  id: ID!
+  start: String!
+  end: String!
+  user: ID
+}
+
+type UserAuth {
+  token: String!
+  name: String!
+}
+
+input userSignInInput {
+  email: String!
+  password: String!
+}

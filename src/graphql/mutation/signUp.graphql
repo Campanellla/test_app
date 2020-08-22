@@ -1,0 +1,7 @@
+#import '../fragment/User.graphql'
+
+mutation userSignUp($input: userSignUpInput) {
+  signUp(input: $input) {
+    ...user
+  }
+}
