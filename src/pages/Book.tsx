@@ -11,13 +11,19 @@ import { Loader, Card, Image, Button } from 'semantic-ui-react'
 import styled from 'styled-components'
 
 export default function Book({ id = '' }) {
-  const { loading, data, error } = useQuery(getAppartmentSchema, {
+  const { loading, data, error: apolloError } = useQuery(getAppartmentSchema, {
     variables: { id },
   })
 
   const [current, setCurrent] = React.useState(0)
+  const [error, setError] = React.useState<string | null>(null)
+  const [success, setSuccess] = React.useState(false)
 
-  const [makeBooking] = useMutation(makeBookingSchema)
+  const [makeBooking] = useMutation(makeBookingSchema, {
+    refetchQueries: [{ query: getAppartmentSchema, variables: { id } }],
+    onCompleted: () => setSuccess(true),
+    onError: (e) => setError(e.message),
+  })
 
   if (loading)
     return (
@@ -38,7 +44,7 @@ export default function Book({ id = '' }) {
     makeBooking({ variables: { input } })
   }
 
-  if (error || !appartment)
+  if (apolloError || !appartment)
     return (
       <div>
         <Header />
@@ -49,6 +55,18 @@ export default function Book({ id = '' }) {
   return (
     <div>
       <Header />
+
+      {success ? (
+        <Button color="green" basic onClick={() => setSuccess(false)}>
+          You booked appartment sucessfully
+        </Button>
+      ) : null}
+
+      {error ? (
+        <Button color="red" basic onClick={() => setError(null)}>
+          {String(error)}
+        </Button>
+      ) : null}
 
       <Container>
         <Card>
@@ -72,6 +90,7 @@ export default function Book({ id = '' }) {
             timeSlots={appartment.timeSlots}
             onSelect={(i) => setCurrent(i)}
             current={current}
+            hideSelected
           />
 
           <Button onClick={book}>BOOK</Button>
@@ -90,15 +109,19 @@ const Container = styled.div`
   }
 `
 
-const TimeSelector = ({ timeSlots, current, onSelect }) => (
+const TimeSelector = ({ timeSlots, current, onSelect, hideSelected }) => (
   <div>
-    {timeSlots.map((slot, i: number) => (
-      <div
-        style={i === current ? { backgroundColor: 'rgba(0,0,0,0.1)' } : undefined}
-        onClick={() => onSelect(i)}
-      >
-        {`${new Date(slot.start).toLocaleString()} -> ${new Date(slot.end).toLocaleString()}`}
-      </div>
-    ))}
+    {timeSlots.map((slot, i: number) => {
+      if (slot.booking?.id) return null
+
+      return (
+        <div
+          style={i === current ? { backgroundColor: 'rgba(0,0,0,0.1)' } : undefined}
+          onClick={() => onSelect(i)}
+        >
+          {`${new Date(slot.start).toLocaleString()} -> ${new Date(slot.end).toLocaleString()}`}
+        </div>
+      )
+    })}
   </div>
 )

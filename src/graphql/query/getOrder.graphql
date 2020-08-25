@@ -1,5 +1,5 @@
-query GetBooking($id: ID!) {
-  getBooking(id: $id) {
+query GetOrder($id: ID!) {
+  getOrder(id: $id) {
     id
     voucher {
       id

@@ -52,7 +52,7 @@ const OrderCard: React.FC<{ order?: Order | null }> = ({ order }) => {
 
       <Card.Content extra>
         <Card.Meta>
-          Buyer: {order?.buyer?.firstName} {order?.buyer?.firstName}
+          Buyer: {buyer?.firstName} {buyer?.firstName}
         </Card.Meta>
       </Card.Content>
     </Card>

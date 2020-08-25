@@ -11,15 +11,21 @@ import { Loader, Card, Button, Input } from 'semantic-ui-react'
 import styled from 'styled-components'
 
 export default function Order({ id = '' }) {
-  const { loading, data, error } = useQuery(getVoucherSchema, {
+  const { loading, data, error: apolloError } = useQuery(getVoucherSchema, {
     variables: { id },
   })
 
   const [amount, setAmount] = React.useState(1)
+  const [error, setError] = React.useState<string | null>(null)
+  const [success, setSuccess] = React.useState(false)
 
   const voucher = data?.getVoucher
 
-  const [makeOrder] = useMutation(makeOrderSchema)
+  const [makeOrder] = useMutation(makeOrderSchema, {
+    refetchQueries: [{ query: getVoucherSchema, variables: { id } }],
+    onCompleted: () => setSuccess(true),
+    onError: (e) => setError(e.message),
+  })
 
   const order = () => {
     const input = {
@@ -38,17 +44,29 @@ export default function Order({ id = '' }) {
       </div>
     )
 
-  if (error || !voucher)
+  if (apolloError || !voucher)
     return (
       <div>
         <Header />
-        Error: {error ? error.message : 'no appartment exist'}
+        Error: {error ? error.message : 'no voucher exist'}
       </div>
     )
 
   return (
     <div>
       <Header />
+
+      {success ? (
+        <Button color="green" basic onClick={() => setSuccess(false)}>
+          You ordered voucher sucessfully
+        </Button>
+      ) : null}
+
+      {error ? (
+        <Button color="red" basic onClick={() => setError(null)}>
+          {String(error)}
+        </Button>
+      ) : null}
 
       <Container>
         <Card>
@@ -58,6 +76,7 @@ export default function Order({ id = '' }) {
           </Card.Content>
           <Card.Content extra>
             <Card.Meta>Price: {voucher.price}</Card.Meta>
+            <Card.Meta>Quantity: {voucher.quantity}</Card.Meta>
           </Card.Content>
         </Card>
 
