@@ -1,0 +1,7 @@
+#import '../fragment/Voucher.graphql'
+
+mutation EditVoucher($input: editVoucherInput!) {
+  editVoucher(input: $input) {
+    ...voucher
+  }
+}

@@ -1,7 +1,7 @@
-import React from "react";
+import React from 'react'
 
-import ListItems from "src/components/ListItems";
-import Header from "src/components/Header";
+import ListItems from 'src/components/ListItems'
+import Header from 'src/components/Header'
 
 export default function Main() {
   return (
@@ -10,5 +10,5 @@ export default function Main() {
 
       <ListItems />
     </div>
-  );
+  )
 }

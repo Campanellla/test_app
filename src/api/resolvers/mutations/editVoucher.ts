@@ -1,20 +1,20 @@
-import { Voucher } from "../../models";
+import { Voucher } from '../../models'
 
 const addVoucher = async (_, args, { user }) => {
-  const { id, ...input } = args.input;
+  const { id, ...input } = args.input
 
-  if (!user?.vouchers?.find((idtest) => idtest === id))
-    throw new Error("You not the owner of voucher");
+  if (!user?.vouchers?.find((voucher) => voucher.id === id))
+    throw new Error('You not the owner of voucher')
 
   const { _id, ...rest } = (
     await Voucher.findByIdAndUpdate(id, input, {
       new: true,
     })
-  ).toObject({ versionKey: false });
+  ).toObject({ versionKey: false })
 
-  const response = { id, ...rest, owner: user };
+  const response = { id, ...rest, owner: user }
 
-  return response;
-};
+  return response
+}
 
-export default addVoucher;
+export default addVoucher

@@ -1,24 +1,22 @@
-import AppartmentList from "src/components/AppartmentList";
-import VoucherList from "src/components/VoucherList";
+import React from 'react'
+import { useQuery } from '@apollo/client'
+import listItems from 'src/graphql/query/listItems.graphql'
 
-import React from "react";
-import { useQuery } from "@apollo/client";
-import listAppartments from "src/graphql/query/listAppartments.graphql";
-import AppartmentCard from "src/components/AppartmentCard";
-
-import listItems from "src/graphql/query/listItems.graphql";
-
-import styled from "styled-components";
+import AppartmentCard from 'src/components/Cards/AppartmentCard'
+import VoucherCard from 'src/components/Cards/VoucherCard'
 
 export default function Main() {
-  const { loading, data, error } = useQuery(listItems);
+  const { loading, data, error } = useQuery(listItems, {
+    variables: { sort: `{"onlyAppartments": false}` },
+  })
 
-  if (loading) return <div>loading</div>;
+  if (loading) return <div>loading</div>
 
-  const appartments = data?.listAppartments;
-  const vouchers = data?.listVouchers;
+  const items = data?.listItems
 
-  if (!appartments || error) return <div>Get appartments error</div>;
+  console.log(items)
+
+  if (error) return <div>Get appartments error</div>
 
   return (
     <div>
@@ -28,8 +26,13 @@ export default function Main() {
         <option>vouchers</option>
       </select>
 
-      <AppartmentList />
-      <VoucherList />
+      {items.map((item) => {
+        if (item?.appartment)
+          return <AppartmentCard appartment={item.appartment} key={item.appartment.id} />
+        if (item?.voucher) return <VoucherCard voucher={item.voucher} key={item.voucher.id} />
+
+        return null
+      })}
     </div>
-  );
+  )
 }

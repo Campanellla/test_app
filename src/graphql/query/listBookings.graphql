@@ -1,0 +1,14 @@
+query ListBookings($id: ID) {
+  listBookings(id: $id) {
+    id
+    appartment {
+      id
+    }
+    timeSlot {
+      id
+    }
+    buyer {
+      id
+    }
+  }
+}

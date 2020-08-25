@@ -1,0 +1,7 @@
+#import '../fragment/Voucher.graphql'
+
+query GetVoucher($id: ID!) {
+  getVoucher(id: $id) {
+    ...voucher
+  }
+}

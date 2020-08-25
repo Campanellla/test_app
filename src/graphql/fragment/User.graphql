@@ -6,9 +6,25 @@ fragment user on User {
   email
   bookings {
     id
+    appartment {
+      id
+    }
+    timeSlot {
+      id
+    }
+    buyer {
+      id
+    }
   }
   orders {
     id
+    voucher {
+      id
+    }
+    amount
+    buyer {
+      id
+    }
   }
   appartments {
     id

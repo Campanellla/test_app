@@ -1,17 +1,17 @@
-import React from "react";
+import React from 'react'
 
-import AddAppartment from "src/components/AddAppartment";
-import AddVoucher from "src/components/AddVoucher";
+import AddAppartment from 'src/components/Add/AddAppartment'
+import AddVoucher from 'src/components/Add/AddVoucher'
 
-import Header from "src/components/Header";
+import Header from 'src/components/Header'
 
-export default function ADD() {
+const AddItems: React.FC<{ appartment: boolean }> = ({ appartment }) => {
   return (
     <div>
       <Header />
-
-      <AddAppartment />
-      <AddVoucher />
+      {appartment ? <AddAppartment /> : <AddVoucher />}
     </div>
-  );
+  )
 }
+
+export default AddItems

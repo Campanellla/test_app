@@ -1,10 +1,9 @@
-import { Voucher } from "../../models";
+import { Voucher } from '../../models'
+import { serializeVoucher } from '../../serializers'
 
-export default async (_, args) => {
-  const voucher = await Voucher.findById(args.id);
+const getVoucher = async (_, args) => {
+  const _voucher = await Voucher.findById(args.id)
+  return await serializeVoucher(_voucher)
+}
 
-  const { _id: id, ...rest } = voucher.toObject({ versionKey: false });
-  const response = { id, ...rest };
-
-  return response;
-};
+export default getVoucher

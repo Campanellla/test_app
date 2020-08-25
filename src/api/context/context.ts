@@ -6,6 +6,8 @@ const context = async ({ req }) => {
   try {
     const { authorization } = req.headers;
 
+    //// JWT CHECK HERE
+
     const userBySub = await User.findOne({ userSub: authorization });
 
     user = await serializeUser(userBySub, { onlyInfo: false });

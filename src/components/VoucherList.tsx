@@ -1,18 +1,18 @@
-import React from "react";
-import { useQuery } from "@apollo/client";
-import styled from "styled-components";
+import React from 'react'
+import { useQuery } from '@apollo/client'
+import styled from 'styled-components'
 
-import listVouchers from "src/graphql/query/listVouchers.graphql";
-import VoucherCard from "src/components/VoucherCard";
+import listVouchers from 'src/graphql/query/listVouchers.graphql'
+import VoucherCard from 'src/components/VoucherCard'
 
 const List = () => {
-  const { loading, data, error } = useQuery(listVouchers);
+  const { loading, data, error } = useQuery(listVouchers)
 
-  if (loading) return <div>loading</div>;
+  if (loading) return <div>loading</div>
 
-  const vouchers = data?.listVouchers;
+  const vouchers = data?.listVouchers
 
-  if (!vouchers || error) return <div>Get appartments error</div>;
+  if (!vouchers || error) return <div>Get voucher error</div>
 
   return (
     <div>
@@ -23,10 +23,10 @@ const List = () => {
         ))}
       </Container>
     </div>
-  );
-};
+  )
+}
 
-export default List;
+export default List
 
 const Container = styled.div`
   display: grid;
@@ -37,4 +37,4 @@ const Container = styled.div`
   > .ui.card {
     margin: 0;
   }
-`;
+`

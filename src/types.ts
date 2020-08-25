@@ -9,89 +9,151 @@ export type Scalars = {
   Float: number;
 };
 
+/** ------> QUERIES HERE */
 export type Query = {
   __typename?: 'Query';
+  currentUser?: Maybe<User>;
   getAppartment?: Maybe<Appartment>;
-  getBooking?: Maybe<Booking>;
   getVoucher?: Maybe<Voucher>;
+  getBooking?: Maybe<Booking>;
   getBookings?: Maybe<Array<Maybe<Booking>>>;
   getOrders?: Maybe<Array<Maybe<Order>>>;
-  currentUser?: Maybe<User>;
   listAppartments?: Maybe<Array<Maybe<Appartment>>>;
   listVouchers?: Maybe<Array<Maybe<Voucher>>>;
+  listBookings?: Maybe<Array<Maybe<Booking>>>;
+  listOrders?: Maybe<Array<Maybe<Order>>>;
+  listItems?: Maybe<Array<Maybe<Item>>>;
 };
 
 
+/** ------> QUERIES HERE */
 export type QueryGetAppartmentArgs = {
   id: Scalars['ID'];
 };
 
 
-export type QueryGetBookingArgs = {
-  id: Scalars['ID'];
-};
-
-
+/** ------> QUERIES HERE */
 export type QueryGetVoucherArgs = {
   id: Scalars['ID'];
 };
 
 
+/** ------> QUERIES HERE */
+export type QueryGetBookingArgs = {
+  id: Scalars['ID'];
+};
+
+
+/** ------> QUERIES HERE */
 export type QueryGetBookingsArgs = {
-  userID?: Maybe<Scalars['ID']>;
+  id?: Maybe<Scalars['ID']>;
 };
 
 
+/** ------> QUERIES HERE */
 export type QueryGetOrdersArgs = {
-  userID?: Maybe<Scalars['ID']>;
+  id?: Maybe<Scalars['ID']>;
 };
 
+
+/** ------> QUERIES HERE */
+export type QueryListItemsArgs = {
+  sort?: Maybe<Scalars['String']>;
+};
+
+/** ------> MUTATIONS HERE */
 export type Mutation = {
   __typename?: 'Mutation';
   makeBooking?: Maybe<Booking>;
   makeOrder?: Maybe<Order>;
+  addUser?: Maybe<User>;
   addAppartment?: Maybe<Appartment>;
   addVoucher?: Maybe<Voucher>;
-  addUser?: Maybe<User>;
+  editAppartment?: Maybe<Appartment>;
+  editVoucher?: Maybe<Voucher>;
   signIn?: Maybe<UserAuth>;
   signUp?: Maybe<User>;
 };
 
 
+/** ------> MUTATIONS HERE */
 export type MutationMakeBookingArgs = {
-  userID: Scalars['ID'];
-  appartmentID: Scalars['ID'];
+  input: MakeBookingInput;
 };
 
 
+/** ------> MUTATIONS HERE */
 export type MutationMakeOrderArgs = {
-  userID: Scalars['ID'];
-  voucherID: Scalars['ID'];
+  input: MakeOrderInput;
 };
 
 
-export type MutationAddAppartmentArgs = {
-  input: AddAppartmentInput;
-};
-
-
-export type MutationAddVoucherArgs = {
-  input: AddVoucherInput;
-};
-
-
+/** ------> MUTATIONS HERE */
 export type MutationAddUserArgs = {
   input: AddUserInput;
 };
 
 
+/** ------> MUTATIONS HERE */
+export type MutationAddAppartmentArgs = {
+  input: AddAppartmentInput;
+};
+
+
+/** ------> MUTATIONS HERE */
+export type MutationAddVoucherArgs = {
+  input: AddVoucherInput;
+};
+
+
+/** ------> MUTATIONS HERE */
+export type MutationEditAppartmentArgs = {
+  input?: Maybe<EditAppartmentInput>;
+};
+
+
+/** ------> MUTATIONS HERE */
+export type MutationEditVoucherArgs = {
+  input?: Maybe<EditVoucherInput>;
+};
+
+
+/** ------> MUTATIONS HERE */
 export type MutationSignInArgs = {
   input?: Maybe<UserSignInInput>;
 };
 
 
+/** ------> MUTATIONS HERE */
 export type MutationSignUpArgs = {
   input?: Maybe<UserSignUpInput>;
+};
+
+/** ------> BOOKING / ORDER INPUT */
+export type MakeBookingInput = {
+  appartmentID: Scalars['ID'];
+  timeSlot: Scalars['ID'];
+};
+
+export type MakeOrderInput = {
+  voucherID: Scalars['ID'];
+  amount: Scalars['ID'];
+};
+
+/** ------> ADD USER / APP / VOUCHER INPUT */
+export type AddUserInput = {
+  firstName: Scalars['String'];
+  lastName: Scalars['String'];
+  email: Scalars['String'];
+};
+
+export type AddAppartmentInput = {
+  name: Scalars['String'];
+  description?: Maybe<Scalars['String']>;
+  image?: Maybe<Scalars['String']>;
+  price: Scalars['Int'];
+  rooms: Scalars['Int'];
+  timeSlots?: Maybe<Array<Maybe<TimeSlotInput>>>;
 };
 
 export type AddVoucherInput = {
@@ -101,6 +163,32 @@ export type AddVoucherInput = {
   quantity?: Maybe<Scalars['Int']>;
 };
 
+/** ------> EDIT USER / APP / VOUCHER INPUT */
+export type EditAppartmentInput = {
+  id: Scalars['ID'];
+  name?: Maybe<Scalars['String']>;
+  description?: Maybe<Scalars['String']>;
+  image?: Maybe<Scalars['String']>;
+  price?: Maybe<Scalars['Int']>;
+  rooms?: Maybe<Scalars['Int']>;
+  timeSlots?: Maybe<Array<Maybe<TimeSlotInput>>>;
+};
+
+export type TimeSlotInput = {
+  id?: Maybe<Scalars['ID']>;
+  start?: Maybe<Scalars['String']>;
+  end?: Maybe<Scalars['String']>;
+};
+
+export type EditVoucherInput = {
+  id: Scalars['ID'];
+  name: Scalars['String'];
+  price: Scalars['Int'];
+  variant: Scalars['String'];
+  quantity?: Maybe<Scalars['Int']>;
+};
+
+/** ------> SIGN UP/IN */
 export type UserSignUpInput = {
   type: Scalars['String'];
   firstName: Scalars['String'];
@@ -109,23 +197,29 @@ export type UserSignUpInput = {
   password: Scalars['String'];
 };
 
-export type AddAppartmentInput = {
-  name: Scalars['String'];
-  description?: Maybe<Scalars['String']>;
-  image?: Maybe<Scalars['String']>;
-  price: Scalars['Int'];
-  rooms: Scalars['Int'];
+export type UserSignInInput = {
+  email: Scalars['String'];
+  password: Scalars['String'];
 };
 
-export type AddUserInput = {
+/** ------> TYPES DESCRIPTION */
+export type User = {
+  __typename?: 'User';
+  id: Scalars['ID'];
+  type: Scalars['String'];
   firstName: Scalars['String'];
   lastName: Scalars['String'];
   email: Scalars['String'];
+  bookings?: Maybe<Array<Maybe<Booking>>>;
+  orders?: Maybe<Array<Maybe<Order>>>;
+  appartments?: Maybe<Array<Maybe<Appartment>>>;
+  vouchers?: Maybe<Array<Maybe<Voucher>>>;
 };
 
 export type Appartment = {
   __typename?: 'Appartment';
   id: Scalars['ID'];
+  owner: User;
   name: Scalars['String'];
   description?: Maybe<Scalars['String']>;
   image?: Maybe<Scalars['String']>;
@@ -137,6 +231,7 @@ export type Appartment = {
 export type Voucher = {
   __typename?: 'Voucher';
   id: Scalars['ID'];
+  owner: User;
   name: Scalars['String'];
   price: Scalars['Int'];
   variant: Scalars['String'];
@@ -146,27 +241,17 @@ export type Voucher = {
 export type Booking = {
   __typename?: 'Booking';
   id: Scalars['ID'];
-  appartment: Appartment;
-  timeSlot: TimeSlot;
-  buyer: User;
+  appartment?: Maybe<Appartment>;
+  timeSlot?: Maybe<TimeSlot>;
+  buyer?: Maybe<User>;
 };
 
 export type Order = {
   __typename?: 'Order';
   id: Scalars['ID'];
-  voucher: Voucher;
-  buyer: User;
-};
-
-export type User = {
-  __typename?: 'User';
-  id: Scalars['ID'];
-  type: Scalars['String'];
-  firstName: Scalars['String'];
-  lastName: Scalars['String'];
-  email: Scalars['String'];
-  bookings?: Maybe<Array<Maybe<Booking>>>;
-  orders?: Maybe<Array<Maybe<Order>>>;
+  voucher?: Maybe<Voucher>;
+  amount?: Maybe<Scalars['Int']>;
+  buyer?: Maybe<User>;
 };
 
 export type TimeSlot = {
@@ -174,15 +259,18 @@ export type TimeSlot = {
   id: Scalars['ID'];
   start: Scalars['String'];
   end: Scalars['String'];
+  booking?: Maybe<Booking>;
 };
 
+export type Item = {
+  __typename?: 'Item';
+  appartment?: Maybe<Appartment>;
+  voucher?: Maybe<Voucher>;
+};
+
+/** ------> auth JWT token */
 export type UserAuth = {
   __typename?: 'UserAuth';
   token: Scalars['String'];
   name: Scalars['String'];
-};
-
-export type UserSignInInput = {
-  email: Scalars['String'];
-  password: Scalars['String'];
 };

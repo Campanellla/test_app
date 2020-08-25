@@ -1,12 +1,16 @@
-const serializeTimeSlot = (timeSlotDocument) => {
-  const timeSlot = timeSlotDocument.toObject({ versionKey: false });
+const serializeTimeSlot = (timeSlotDocument, { onlyInfo } = {}) => {
+  const timeSlot = timeSlotDocument.toObject({ versionKey: false })
 
-  timeSlot.id = timeSlot._id;
-  delete timeSlot._id;
+  timeSlot.id = String(timeSlot._id)
+  delete timeSlot._id
 
-  timeSlot.user = { id: timeSlot.user };
+  if (onlyInfo || true) {
+    if (timeSlot.booking) timeSlot.booking = { id: timeSlot.booking }
 
-  return timeSlot;
-};
+    return timeSlot
+  }
 
-export default serializeTimeSlot;
+  return timeSlot
+}
+
+export default serializeTimeSlot

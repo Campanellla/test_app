@@ -1,0 +1,13 @@
+#import "../fragment/Appartment.graphql"
+#import "../fragment/Voucher.graphql"
+
+query ListItems($sort: String) {
+  listItems(sort: $sort) {
+    appartment {
+      ...appartment
+    }
+    voucher {
+      ...voucher
+    }
+  }
+}

@@ -1,23 +1,23 @@
-import mongoose from "mongoose";
+import mongoose from 'mongoose'
 
 const schema = new mongoose.Schema({
   type: {
     type: String,
-    required: [true, "user type is not defined"],
+    required: [true, 'user type is not defined'],
   },
 
   email: {
     type: String,
-    required: [true, "user email is not defined"],
+    required: [true, 'user email is not defined'],
   },
 
   firstName: {
     type: String,
-    required: [true, "user name is not defined"],
+    required: [true, 'user name is not defined'],
   },
   lastName: {
     type: String,
-    required: [true, "user name is not defined"],
+    required: [true, 'user name is not defined'],
   },
 
   bookings: [mongoose.Schema.Types.ObjectId],
@@ -28,10 +28,10 @@ const schema = new mongoose.Schema({
 
   userSub: {
     type: String,
-    required: [true, "user sub is not defined"],
+    required: [true, 'user sub is not defined'],
   },
-});
+})
 
-schema.index({ "$**": "text" });
+schema.index({ '$**': 'text' })
 
-export const User = mongoose.models.User || mongoose.model("User", schema);
+export const User = mongoose.models.User || mongoose.model('User', schema)

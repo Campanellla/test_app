@@ -1,1 +1,14 @@
-
+mutation MakeBooking($input: makeBookingInput!) {
+  makeBooking(input: $input) {
+    id
+    appartment {
+      id
+    }
+    timeSlot {
+      id
+    }
+    buyer {
+      id
+    }
+  }
+}

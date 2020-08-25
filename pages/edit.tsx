@@ -2,11 +2,12 @@ import React from "react";
 import EditPage from "src/pages/Edit";
 
 type Props = {
-  appartmentID: string;
+  appartment?: string;
+  voucher?: string;
 };
 
 type InitialProps = {
-  query: { appartment?: string };
+  query: { appartment?: string; voucher?: string };
 };
 
 class Book extends React.Component<Props> {

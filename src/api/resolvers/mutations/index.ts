@@ -4,6 +4,8 @@ import signIn from "./signIn";
 import signUp from "./signUp";
 import editAppartment from "./editAppartment";
 import editVoucher from "./editVoucher";
+import makeBooking from "./makeBooking";
+import makeOrder from "./makeOrder";
 
 export default {
   addAppartment,
@@ -14,4 +16,7 @@ export default {
 
   signIn,
   signUp,
+
+  makeBooking,
+  makeOrder,
 };

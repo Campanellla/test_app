@@ -1,11 +1,9 @@
-import { Appartment } from "../../models/Appartment";
+import { Appartment } from '../../models'
+import { serializeAppartment } from '../../serializers'
 
-export default async (_, args, { user }) => {
-  const appartment = await Appartment.findById(args.id);
+const getAppartment = async (_, args) => {
+  const _appartment = await Appartment.findById(args.id)
+  return await serializeAppartment(_appartment)
+}
 
-  const { _id: id, ...rest } = appartment.toObject({ versionKey: false });
-
-  const response = { id, ...rest };
-
-  return response;
-};
+export default getAppartment

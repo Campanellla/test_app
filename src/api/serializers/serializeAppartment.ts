@@ -24,7 +24,9 @@ const serializeAppartment = async (appartmentDocument, options = {}) => {
     _id: { $in: appartment.timeSlots },
   });
 
-  const timeSlots = _timeSlots.map((slot) => serializeTimeSlot(slot));
+  const timeSlots = _timeSlots.map((slot) =>
+    serializeTimeSlot(slot, { onlyInfo: true })
+  );
 
   appartment.timeSlots = timeSlots;
 

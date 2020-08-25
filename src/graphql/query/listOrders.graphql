@@ -1,0 +1,12 @@
+query ListOrders($id: ID) {
+  listOrders(id: $id) {
+    id
+    voucher {
+      id
+    }
+    amount
+    buyer {
+      id
+    }
+  }
+}

@@ -1,3 +1,6 @@
+"""
+------> QUERIES HERE
+"""
 type Query {
   currentUser: User
 
@@ -6,13 +9,20 @@ type Query {
 
   getBooking(id: ID!): Booking
 
-  getBookings(userID: ID): [Booking]
-  getOrders(userID: ID): [Order]
+  getBookings(id: ID): [Booking]
+  getOrders(id: ID): [Order]
 
   listAppartments: [Appartment]
   listVouchers: [Voucher]
+  listBookings(id: ID): [Booking]
+  listOrders(id: ID): [Order]
+
+  listItems(sort: String): [Item]
 }
 
+"""
+------> MUTATIONS HERE
+"""
 type Mutation {
   makeBooking(input: makeBookingInput!): Booking
   makeOrder(input: makeOrderInput!): Order
@@ -29,22 +39,26 @@ type Mutation {
   signUp(input: userSignUpInput): User
 }
 
-input editAppartmentInput {
-  id: ID!
-  name: String
-  description: String
-  image: String
-  price: Int
-  rooms: Int
-  timeSlots: [TimeSlotInput]
+"""
+------> BOOKING / ORDER INPUT
+"""
+input makeBookingInput {
+  appartmentID: ID!
+  timeSlot: ID!
 }
 
-input editVoucherInput {
-  id: ID!
-  name: String!
-  price: Int!
-  variant: String!
-  quantity: Int
+input makeOrderInput {
+  voucherID: ID!
+  amount: ID!
+}
+
+"""
+------> ADD USER / APP / VOUCHER INPUT
+"""
+input addUserInput {
+  firstName: String!
+  lastName: String!
+  email: String!
 }
 
 input addAppartmentInput {
@@ -56,24 +70,6 @@ input addAppartmentInput {
   timeSlots: [TimeSlotInput]
 }
 
-input TimeSlotInput {
-  id: ID
-  start: String
-  end: String
-}
-
-input makeBookingInput {
-  userID: ID!
-  appartmentID: ID!
-  timeslot: ID!
-}
-
-input makeOrderInput {
-  userID: ID!
-  appartmentID: ID!
-  timeslot: ID!
-}
-
 input addVoucherInput {
   name: String!
   price: Int!
@@ -81,6 +77,36 @@ input addVoucherInput {
   quantity: Int
 }
 
+"""
+------> EDIT USER / APP / VOUCHER INPUT
+"""
+input editAppartmentInput {
+  id: ID!
+  name: String
+  description: String
+  image: String
+  price: Int
+  rooms: Int
+  timeSlots: [TimeSlotInput]
+}
+
+input TimeSlotInput {
+  id: ID
+  start: String
+  end: String
+}
+
+input editVoucherInput {
+  id: ID!
+  name: String!
+  price: Int!
+  variant: String!
+  quantity: Int
+}
+
+"""
+------> SIGN UP/IN
+"""
 input userSignUpInput {
   type: String!
   firstName: String!
@@ -89,10 +115,24 @@ input userSignUpInput {
   password: String!
 }
 
-input addUserInput {
+input userSignInInput {
+  email: String!
+  password: String!
+}
+
+"""
+------> TYPES DESCRIPTION
+"""
+type User {
+  id: ID!
+  type: String!
   firstName: String!
   lastName: String!
   email: String!
+  bookings: [Booking]
+  orders: [Order]
+  appartments: [Appartment]
+  vouchers: [Voucher]
 }
 
 type Appartment {
@@ -117,42 +157,34 @@ type Voucher {
 
 type Booking {
   id: ID!
-  appartment: Appartment!
-  timeSlot: TimeSlot!
-  buyer: User!
+  appartment: Appartment
+  timeSlot: TimeSlot
+  buyer: User
 }
 
 type Order {
   id: ID!
-  voucher: Voucher!
-  buyer: User!
-}
-
-type User {
-  id: ID!
-  type: String!
-  firstName: String!
-  lastName: String!
-  email: String!
-  bookings: [Booking]
-  orders: [Order]
-  appartments: [Appartment]
-  vouchers: [Voucher]
+  voucher: Voucher
+  amount: Int
+  buyer: User
 }
 
 type TimeSlot {
   id: ID!
   start: String!
   end: String!
-  user: ID
+  booking: Booking
 }
 
+type Item {
+  appartment: Appartment
+  voucher: Voucher
+}
+
+"""
+------> auth JWT token
+"""
 type UserAuth {
   token: String!
   name: String!
-}
-
-input userSignInInput {
-  email: String!
-  password: String!
 }

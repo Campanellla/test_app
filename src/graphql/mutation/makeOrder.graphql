@@ -1,1 +1,19 @@
-
+mutation MakeOrder($input: makeOrderInput!) {
+  makeOrder(input: $input) {
+    id
+    voucher {
+      id
+      owner {
+        id
+      }
+      name
+      price
+      variant
+      quantity
+    }
+    amount
+    buyer {
+      id
+    }
+  }
+}

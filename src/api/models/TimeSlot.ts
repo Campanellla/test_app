@@ -9,7 +9,7 @@ const schema = new mongoose.Schema({
     type: String,
     required: [true, "end is not defined"],
   },
-  user: mongoose.Schema.Types.ObjectId,
+  booking: mongoose.Schema.Types.ObjectId,
 });
 
 schema.index({ "$**": "text" });

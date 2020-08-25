@@ -2,4 +2,7 @@ fragment timeslot on TimeSlot {
   id
   start
   end
+  booking {
+    id
+  }
 }
