@@ -1,9 +1,9 @@
 import { User } from '../../models/User'
 
 export default async (_, args) => {
-  const input = args.input
+  const input = args?.input
 
-  const userExist = await User.exists({ email: input.email })
+  const userExist = await User.exists({ email: input?.email })
 
   if (userExist) throw new Error('User Exists')
 

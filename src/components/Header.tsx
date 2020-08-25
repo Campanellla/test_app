@@ -29,7 +29,7 @@ export default function Header() {
       </HeaderContainer>
 
       <MobileBar>
-        <div>User: {currentUser.email}</div>
+        <div>{currentUser?.id ? `User: ${currentUser?.email}` : null} </div>
 
         <Button basic onClick={() => setDropdown(!dropdown)}>
           ☰
