@@ -5,14 +5,16 @@ import resolvers from 'src/api/resolvers'
 import mongoStart from 'src/api/connectors/mongo'
 import context from 'src/api/context/context'
 
-import getConfig from 'next/config'
-const { serverRuntimeConfig } = getConfig()
+// import getConfig from 'next/config'
+// const { serverRuntimeConfig } = getConfig()
+
+// serverRuntimeConfig.PROJECT_ROOT
 
 mongoStart()
 
-const typeDefs = importSchema(
-  path.join(serverRuntimeConfig.PROJECT_ROOT, 'src/api/schema/schema.graphql')
-)
+const p = path.resolve('src/api/schema/schema.graphql')
+
+const typeDefs = importSchema(p)
 
 const apolloServer = new ApolloServer({ typeDefs, resolvers, context })
 
