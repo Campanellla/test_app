@@ -3,11 +3,21 @@ import { Card, Image } from 'semantic-ui-react'
 
 import type { Booking } from 'src/types'
 
+import getBookingSchema from 'src/graphql/query/getBooking.graphql'
+import { useQuery } from '@apollo/client'
+
 const BookingCard: React.FC<{ booking?: Booking | null }> = ({ booking }) => {
   if (!booking) return null
 
-  const appartment = booking?.appartment
-  const timeSlot = booking?.timeSlot
+  const { loading, data, error } = useQuery(getBookingSchema, { variables: { id: booking.id } })
+
+  if (loading) return <div>loading</div>
+
+  if (error) return <div>{String(error?.message)}</div>
+
+  const appartment = data?.getBooking?.appartment
+  const timeSlot = data?.getBooking?.timeSlot
+  const buyer = data?.getBooking?.buyer
 
   if (!timeSlot?.id || !appartment?.id) return null
 
@@ -28,7 +38,7 @@ const BookingCard: React.FC<{ booking?: Booking | null }> = ({ booking }) => {
       <Card.Content extra>
         <Card.Meta>Time: {`${timeSlot.start}->${timeSlot.end}`}</Card.Meta>
         <Card.Meta>
-          Buyer: {booking.buyer.firstName} {booking.buyer.firstName}
+          Buyer: {buyer.firstName} {buyer.firstName}
         </Card.Meta>
       </Card.Content>
     </Card>

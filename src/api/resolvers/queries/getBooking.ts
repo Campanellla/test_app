@@ -1,10 +1,24 @@
-import { Booking } from "../../models";
+import { Booking, User, Appartment, TimeSlot } from '../../models'
+import {
+  serializeBooking,
+  serializeUser,
+  serializeAppartment,
+  serializeTimeSlot,
+} from '../../serializers'
 
 export default async (_, args) => {
-  const booking = await Booking.findById(args.id);
+  const _booking = await Booking.findById(args.id)
 
-  const { _id: id, ...rest } = booking.toObject({ versionKey: false });
-  const response = { id, ...rest };
+  const booking = serializeBooking(_booking)
 
-  return response;
-};
+  const _user = await User.findById(booking.buyer.id)
+  booking.buyer = await serializeUser(_user, { onlyInfo: true })
+
+  const _appartment = await Appartment.findById(booking.appartment.id)
+  booking.appartment = await serializeAppartment(_appartment, { onlyInfo: true })
+
+  const _timeSlot = await TimeSlot.findById(booking.timeSlot.id)
+  booking.timeSlot = serializeTimeSlot(_timeSlot, { onlyInfo: true })
+
+  return booking
+}

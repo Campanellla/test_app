@@ -10,6 +10,9 @@ import listItems from './listItems'
 import listBookings from './listBookings'
 import listOrders from './listOrders'
 
+import getBooking from './getBooking'
+import getOrder from './getOrder'
+
 export default {
   currentUser,
 
@@ -23,9 +26,8 @@ export default {
   listBookings,
   listOrders,
 
-  // getBooking
-  // getBookings
-  // getOrders
+  getBooking,
+  getOrder,
 
   //listAppartments: [Appartment]
   //listVouchers: [Voucher]

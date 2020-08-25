@@ -1,0 +1,22 @@
+query GetBooking($id: ID!) {
+  getBooking(id: $id) {
+    id
+    appartment {
+      id
+      name
+      description
+      price
+      rooms
+    }
+    timeSlot {
+      id
+      start
+      end
+    }
+    buyer {
+      id
+      firstName
+      lastName
+    }
+  }
+}

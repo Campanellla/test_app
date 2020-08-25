@@ -8,6 +8,7 @@ type Query {
   getVoucher(id: ID!): Voucher
 
   getBooking(id: ID!): Booking
+  getOrder(id: ID!): Order
 
   getBookings(id: ID): [Booking]
   getOrders(id: ID): [Order]

@@ -1,0 +1,17 @@
+query GetBooking($id: ID!) {
+  getBooking(id: $id) {
+    id
+    voucher {
+      id
+      name
+      variant
+      price
+    }
+    amount
+    buyer {
+      id
+      firstName
+      lastName
+    }
+  }
+}

@@ -1,7 +1,10 @@
 import React from 'react'
 import { Card, Image } from 'semantic-ui-react'
 
+import getOrderSchema from 'src/graphql/query/getOrder.graphql'
+
 import type { Order } from 'src/types'
+import { useQuery } from '@apollo/client'
 
 const getVoucherImage = (variant: string) => {
   switch (variant) {
@@ -21,9 +24,15 @@ const getVoucherImage = (variant: string) => {
 const OrderCard: React.FC<{ order?: Order | null }> = ({ order }) => {
   if (!order) return null
 
-  const voucher = order?.voucher
-  const amount = order?.amount
-  const buyer = order.buyer
+  const { loading, data, error } = useQuery(getOrderSchema, { variables: { id: order.id } })
+
+  if (loading) return <div>loading</div>
+
+  if (error) return <div>{String(error?.message)}</div>
+
+  const voucher = data?.getOrder?.voucher
+  const amount = data?.getOrder?.amount
+  const buyer = data?.getOrder?.buyer
 
   if (!voucher?.id) return null
 
