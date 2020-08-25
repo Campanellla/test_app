@@ -68,71 +68,82 @@ export default function Main() {
   }
 
   return (
-    <div>
-      <Dropdown
-        selection
-        value={type}
-        options={[
-          {
-            key: 'all',
-            text: 'all',
-            value: 'all',
-          },
-          {
-            key: 'appartments',
-            text: 'appartments',
-            value: 'appartments',
-          },
-          {
-            key: 'vouchers',
-            text: 'vouchers',
-            value: 'vouchers',
-          },
-        ]}
-        onChange={(_, e) => setType(e.value as string)}
-      />
-
-      <Input
-        type="number"
-        value={priceStart}
-        onChange={(e) => setPriceStart(e.currentTarget.value)}
-      />
-
-      <Input type="number" value={priceEnd} onChange={(e) => setPriceEnd(e.currentTarget.value)} />
-
-      <Input type="number" value={rooms} onChange={(e) => setRooms(e.currentTarget.value)} />
-
-      <div>
-        <Checkbox
-          checked={timeFilter}
-          label="filter by time range"
-          onChange={(_, e) => setTimeFilter(e.checked)}
+    <Container>
+      <div className="filter">
+        <Dropdown
+          selection
+          value={type}
+          options={[
+            {
+              key: 'all',
+              text: 'all',
+              value: 'all',
+            },
+            {
+              key: 'appartments',
+              text: 'appartments',
+              value: 'appartments',
+            },
+            {
+              key: 'vouchers',
+              text: 'vouchers',
+              value: 'vouchers',
+            },
+          ]}
+          onChange={(_, e) => setType(e.value as string)}
         />
-        Start time:
-        <DatePicker
-          selected={dateStart}
-          onChange={(date) => setDateStart(date)}
-          timeInputLabel="Time start:"
-          dateFormat="MM/dd/yyyy h:mm aa"
-          showTimeInput
-          timeIntervals={60}
-          showTimeSelect
-        />
-        End time:
-        <DatePicker
-          selected={dateEnd}
-          onChange={(date) => setDateEnd(date)}
-          timeInputLabel="Time end:"
-          dateFormat="MM/dd/yyyy h:mm aa"
-          showTimeInput
-          timeIntervals={60}
-          showTimeSelect
-          minDate={dateStart}
-        />
+        <div>
+          price from:
+          <Input
+            type="number"
+            value={priceStart}
+            onChange={(e) => setPriceStart(e.currentTarget.value)}
+          />
+        </div>
+        <div>
+          to:
+          <Input
+            type="number"
+            value={priceEnd}
+            onChange={(e) => setPriceEnd(e.currentTarget.value)}
+          />
+        </div>
+        <div>
+          Rooms:
+          <Input type="number" value={rooms} onChange={(e) => setRooms(e.currentTarget.value)} />
+        </div>
+        <div>
+          <Checkbox
+            checked={timeFilter}
+            label="filter by time range"
+            onChange={(_, e) => setTimeFilter(e.checked)}
+          />
+          <div>
+            Start time:
+            <DatePicker
+              selected={dateStart}
+              onChange={(date) => setDateStart(date)}
+              timeInputLabel="Time start:"
+              dateFormat="MM/dd/yyyy h:mm aa"
+              showTimeInput
+              timeIntervals={60}
+              showTimeSelect
+            />
+            End time:
+            <DatePicker
+              selected={dateEnd}
+              onChange={(date) => setDateEnd(date)}
+              timeInputLabel="Time end:"
+              dateFormat="MM/dd/yyyy h:mm aa"
+              showTimeInput
+              timeIntervals={60}
+              showTimeSelect
+              minDate={dateStart}
+            />
+          </div>
+        </div>
+        <Button onClick={filter}> Filter </Button>
       </div>
-
-      <Button onClick={filter}> Filter </Button>
-
       <ListContainer>
         {items.map((item) => {
           if (item?.appartment)
@@ -142,6 +153,20 @@ export default function Main() {
           return null
         })}
       </ListContainer>
-    </div>
+    </Container>
   )
 }
+
+const Container = styled.div`
+  .filter {
+    display: flex;
+    flex-wrap: wrap;
+
+    @media (max-width: 812px) {
+      display: grid;
+      gap: 1rem;
+
+      grid-auto-flow: row;
+    }
+  }
+`
