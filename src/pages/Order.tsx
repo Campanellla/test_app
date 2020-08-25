@@ -78,5 +78,9 @@ export default function Order({ id = '' }) {
 
 const Container = styled.div`
   display: grid;
-  grid-template-columns: auto 1fr;
+  grid-template-rows: auto 1fr;
+
+  @media (min-width: 813px) {
+    grid-template-columns: auto 1fr;
+  }
 `

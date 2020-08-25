@@ -6,10 +6,13 @@ import AppartmentCard from 'src/components/Cards/AppartmentCard'
 import VoucherCard from 'src/components/Cards/VoucherCard'
 
 import { Dropdown, Button, Input, Checkbox } from 'semantic-ui-react'
+import styled from 'styled-components'
 
 import { useRouter } from 'next/router'
 
 import DatePicker from 'react-datepicker'
+
+import ListContainer from 'src/components/ListContainer'
 
 export default function Main() {
   const router = useRouter()
@@ -130,13 +133,15 @@ export default function Main() {
 
       <Button onClick={filter}> Filter </Button>
 
-      {items.map((item) => {
-        if (item?.appartment)
-          return <AppartmentCard appartment={item.appartment} key={item.appartment.id} />
-        if (item?.voucher) return <VoucherCard voucher={item.voucher} key={item.voucher.id} />
+      <ListContainer>
+        {items.map((item) => {
+          if (item?.appartment)
+            return <AppartmentCard appartment={item.appartment} key={item.appartment.id} />
+          if (item?.voucher) return <VoucherCard voucher={item.voucher} key={item.voucher.id} />
 
-        return null
-      })}
+          return null
+        })}
+      </ListContainer>
     </div>
   )
 }

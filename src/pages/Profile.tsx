@@ -12,6 +12,7 @@ import Router from 'next/router'
 
 import BookingCard from 'src/components/Cards/BookingCard'
 import OrderCard from 'src/components/Cards/OrderCard'
+import ListContainer from 'src/components/ListContainer'
 
 export default function Profile() {
   const currentUser = React.useContext(CurrentUserContext)
@@ -61,16 +62,4 @@ const InputsContainer = styled.div`
   grid-template-columns: 1fr 1fr;
   align-items: center;
   justify-items: center;
-`
-
-const ListContainer = styled.div`
-  margin: 1rem 0.5rem;
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(10rem, auto));
-  grid-gap: 1rem;
-  justify-items: center;
-
-  > .ui.card {
-    margin: 0;
-  }
 `
