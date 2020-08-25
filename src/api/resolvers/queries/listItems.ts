@@ -11,7 +11,16 @@ const listItems = async (_, args) => {
     sorting = JSON.parse(sort)
   } catch (e) {}
 
-  const { type, pricestart, priceend, datestart, dateend, rooms, param = 'name' } = sorting
+  const {
+    type,
+    pricestart,
+    priceend,
+    datestart,
+    dateend,
+    rooms,
+    unbooked,
+    param = 'name',
+  } = sorting
 
   const _vouchers = type === 'appartments' ? [] : await Voucher.find({})
   const _appartments = type === 'vouchers' ? [] : await Appartment.find({})
@@ -49,6 +58,7 @@ const listItems = async (_, args) => {
     items = items.filter((item) => {
       const slots = item.appartment?.timeSlots?.filter((slot) => {
         if (!slot?.start) return false
+        if (unbooked && slot.booking?.id) return false
 
         const start = new Date(slot.start)
         const end = new Date(slot.end)
