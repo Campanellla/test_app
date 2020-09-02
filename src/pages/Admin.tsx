@@ -11,7 +11,7 @@ import ListContainer from 'src/components/ListContainer'
 import { Button, Input } from 'semantic-ui-react'
 
 import { useLazyQuery } from '@apollo/client'
-import listItems from 'src/graphql/query/listItems.graphql'
+import getAdminReportSchema from 'src/graphql/query/getAdminReport.graphql'
 
 import DatePicker from 'react-datepicker'
 
@@ -34,29 +34,22 @@ export default function Admin() {
 }
 
 const MakeReport = () => {
-  const [runQuery, { loading, data, error }] = useLazyQuery(listItems)
+  const [runQuery, { loading, data, error }] = useLazyQuery(getAdminReportSchema)
 
   const [dateStart, setDateStart] = React.useState(new Date())
   const [dateEnd, setDateEnd] = React.useState(new Date())
-  const [rooms, setRooms] = React.useState(null)
 
   if (loading) return <div>loading</div>
 
-  const items = data?.listItems
+  const items = data?.getAdminReport
 
   if (error) return <div>Get appartments error</div>
 
   const runReport = () => {
     const query = {}
 
-    query.type = 'appatrments'
-
     if (dateStart) query.datestart = dateStart.toISOString()
     if (dateEnd) query.dateend = dateEnd.toISOString()
-    if (rooms) query.rooms = rooms
-
-    query.unBooked = true
-    query.descending = true
 
     runQuery({ variables: { sort: JSON.stringify(query) } })
   }
@@ -64,9 +57,8 @@ const MakeReport = () => {
   return (
     <div>
       Rooms:
-      <Input type="number" value={rooms} onChange={(e) => setRooms(e.currentTarget.value)} />
       <div>
-        Start time:
+        <div>Start time:</div>
         <DatePicker
           selected={dateStart}
           onChange={(date) => setDateStart(date)}
@@ -76,7 +68,7 @@ const MakeReport = () => {
           timeIntervals={60}
           showTimeSelect
         />
-        End time:
+        <div>End time:</div>
         <DatePicker
           selected={dateEnd}
           onChange={(date) => setDateEnd(date)}
@@ -89,14 +81,20 @@ const MakeReport = () => {
         />
       </div>
       <Button onClick={runReport}> Show </Button>
-      <ListContainer>
-        {items?.map((item) => {
-          if (item?.appartment)
-            return <AppartmentCard appartment={item.appartment} key={item.appartment.id} />
+      <div>
+        {items?.map(({ rooms, unbooked }: { rooms?: number; unbooked?: number } = {}) => {
+          if (rooms)
+            return (
+              <div>
+                {`${rooms} room${rooms > 1 ? 's' : ''} - ${unbooked} appartment${
+                  (unbooked || 0) > 1 ? 's' : ''
+                } unbooked `}
+              </div>
+            )
 
           return null
         })}
-      </ListContainer>
+      </div>
     </div>
   )
 }

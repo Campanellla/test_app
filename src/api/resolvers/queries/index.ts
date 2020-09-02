@@ -13,6 +13,8 @@ import listOrders from './listOrders'
 import getBooking from './getBooking'
 import getOrder from './getOrder'
 
+import getAdminReport from './getAdminReport'
+
 export default {
   currentUser,
 
@@ -28,6 +30,8 @@ export default {
 
   getBooking,
   getOrder,
+
+  getAdminReport,
 
   //listAppartments: [Appartment]
   //listVouchers: [Voucher]

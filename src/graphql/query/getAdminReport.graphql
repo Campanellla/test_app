@@ -1,0 +1,6 @@
+query GetAdminReport($sort: String) {
+  getAdminReport(sort: $sort) {
+    rooms
+    unbooked
+  }
+}
