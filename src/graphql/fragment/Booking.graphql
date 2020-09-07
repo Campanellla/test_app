@@ -1,0 +1,16 @@
+#import './User/info.graphql'
+#import './Appartment/info.graphql'
+#import './TimeSlot.graphql'
+
+fragment booking on Booking {
+  id
+  appartment {
+    ...appartment_info
+  }
+  timeSlot {
+    ...timeslot
+  }
+  buyer {
+    ...user_info
+  }
+}

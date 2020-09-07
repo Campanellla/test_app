@@ -1,0 +1,6 @@
+fragment user_info on User {
+  id
+  type
+  firstName
+  lastName
+}

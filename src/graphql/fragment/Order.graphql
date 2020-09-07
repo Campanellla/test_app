@@ -1,0 +1,13 @@
+#import './User/info.graphql'
+#import './Voucher/normal.graphql'
+
+fragment order on Order {
+  id
+  amount
+  voucher {
+    ...voucher
+  }
+  buyer {
+    ...user_info
+  }
+}

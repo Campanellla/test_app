@@ -1,18 +1,16 @@
-#import './TimeSlot.graphql'
+#import '../TimeSlot.graphql'
+#import '../User/info.graphql'
 
 fragment appartment on Appartment {
   id
-  owner {
-    id
-    firstName
-    lastName
-    email
-  }
   name
   description
   image
   price
   rooms
+  owner {
+    ...user_info
+  }
   timeSlots {
     ...timeslot
   }

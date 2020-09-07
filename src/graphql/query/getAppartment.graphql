@@ -1,4 +1,4 @@
-#import '../fragment/Appartment.graphql'
+#import '../fragment/Appartment/normal.graphql'
 
 query GetAppartment($id: ID!) {
   getAppartment(id: $id) {

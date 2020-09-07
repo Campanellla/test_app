@@ -1,14 +1,19 @@
-const serializeTimeSlot = (timeSlotDocument, { onlyInfo } = {}) => {
-  const timeSlot = timeSlotDocument.toObject({ versionKey: false })
+import mongoose from 'mongoose'
 
-  timeSlot.id = String(timeSlot._id)
-  delete timeSlot._id
+import serializeBooking from './serializeBooking'
+import toObject from './toObject'
 
-  if (onlyInfo || true) {
-    if (timeSlot.booking) timeSlot.booking = { id: timeSlot.booking }
+import { TimeSlot as TimeSlotType } from '../../types'
 
-    return timeSlot
-  }
+const serializeTimeSlot = (
+  _timeSlot: mongoose.Document | TimeSlotType | mongoose.Types.ObjectId | string
+) => {
+  if (typeof _timeSlot === 'string') return { id: _timeSlot }
+  if (_timeSlot instanceof mongoose.Types.ObjectId) return { id: String(_timeSlot) }
+
+  const timeSlot = toObject(_timeSlot as mongoose.Document | TimeSlotType)
+
+  if (timeSlot.booking) timeSlot.booking = serializeBooking(timeSlot.booking)
 
   return timeSlot
 }

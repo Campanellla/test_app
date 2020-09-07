@@ -1,0 +1,16 @@
+#import '../TimeSlot.graphql'
+
+fragment appartment_owned on Appartment {
+  id
+  name
+  description
+  image
+  price
+  rooms
+  owner {
+    id
+  }
+  timeSlots {
+    ...timeslot
+  }
+}

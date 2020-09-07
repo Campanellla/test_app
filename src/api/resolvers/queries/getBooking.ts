@@ -1,24 +1,75 @@
-import { Booking, User, Appartment, TimeSlot } from '../../models'
-import {
-  serializeBooking,
-  serializeUser,
-  serializeAppartment,
-  serializeTimeSlot,
-} from '../../serializers'
+import { Booking } from '../../models'
+import { serializeBooking } from '../../serializers'
 
-export default async (_, args) => {
-  const _booking = await Booking.findById(args.id)
+import mongoose from 'mongoose'
 
-  const booking = serializeBooking(_booking)
+const getBooking = async (_, { id }) => {
+  const _booking = await Booking.aggregate([
+    {
+      $match: {
+        _id: mongoose.Types.ObjectId(id),
+      },
+    },
+    // get appartment
+    {
+      $lookup: {
+        from: 'appartments',
+        localField: 'appartment',
+        foreignField: '_id',
+        as: 'appartment',
+      },
+    },
+    {
+      $unwind: {
+        path: '$appartment',
+      },
+    },
+    {
+      $lookup: {
+        from: 'users',
+        localField: 'appartment.owner',
+        foreignField: '_id',
+        as: 'appartment.owner',
+      },
+    },
+    {
+      $unwind: {
+        path: '$appartment.owner',
+      },
+    },
+    // get buyer
+    {
+      $lookup: {
+        from: 'users',
+        localField: 'buyer',
+        foreignField: '_id',
+        as: 'buyer',
+      },
+    },
+    {
+      $unwind: {
+        path: '$buyer',
+      },
+    },
+    //get time slot
+    {
+      $lookup: {
+        from: 'timeslots',
+        localField: 'timeSlot',
+        foreignField: '_id',
+        as: 'timeSlot',
+      },
+    },
+    {
+      $unwind: {
+        path: '$timeSlot',
+      },
+    },
+  ])
 
-  const _user = await User.findById(booking.buyer.id)
-  booking.buyer = await serializeUser(_user, { onlyInfo: true })
+  if (!_booking[0]) throw new Error('Booking not exists')
 
-  const _appartment = await Appartment.findById(booking.appartment.id)
-  booking.appartment = await serializeAppartment(_appartment, { onlyInfo: true })
-
-  const _timeSlot = await TimeSlot.findById(booking.timeSlot.id)
-  booking.timeSlot = serializeTimeSlot(_timeSlot, { onlyInfo: true })
-
-  return booking
+  return serializeBooking(_booking[0])
 }
+
+export default getBooking

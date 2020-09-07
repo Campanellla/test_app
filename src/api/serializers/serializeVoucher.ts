@@ -1,23 +1,21 @@
-import { User } from '../models'
+import mongoose from 'mongoose'
+
 import serializeUser from './serializeUser'
+import toObject from './toObject'
 
-const serializeAppartment = async (voucherDocument, options = {}) => {
-  const { onlyInfo } = options
+import { Voucher as VoucherType } from '../../types'
 
-  const voucher = voucherDocument.toObject({ versionKey: false })
+const serializeVoucher = (
+  _voucher: mongoose.Document | VoucherType | mongoose.Types.ObjectId | string
+) => {
+  if (typeof _voucher === 'string') return { id: _voucher }
+  if (_voucher instanceof mongoose.Types.ObjectId) return { id: String(_voucher) }
 
-  voucher.id = String(voucher._id)
-  delete voucher._id
+  const voucher = toObject(_voucher)
 
-  if (onlyInfo) {
-    voucher.owner = { id: voucher.owner }
-    return voucher
-  }
-
-  const _owner = await User.findById(voucher.owner)
-  voucher.owner = await serializeUser(_owner, { onlyInfo: true })
+  if (voucher.owner) voucher.owner = serializeUser(voucher.owner)
 
   return voucher
 }
 
-export default serializeAppartment
+export default serializeVoucher

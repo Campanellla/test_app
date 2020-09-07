@@ -1,8 +1,8 @@
 /**
  * MongoDB connector
  */
-import mongo from "mongoose";
-import logger from "../helpers/logger";
+import mongo from 'mongoose'
+import logger from '../helpers/logger'
 
 const {
   ENV,
@@ -11,36 +11,34 @@ const {
   MONGODB_ATLAS_DEV_USERNAME: DEV_NAME,
   MONGODB_ATLAS_DEV_PASSWORD: DEV_PASS,
   MONGODB_ATLAS_DEV_CLUSTER: DEV_CLUSTER,
-} = process.env;
+} = process.env
 
-let MONGO_URI = null;
+let MONGO_URI = null
 switch (ENV) {
-  case "local":
-    MONGO_URI = `${MONGODB_LOCAL_URL}/${DB}`;
-    break;
-  case "dev":
-    MONGO_URI = `mongodb+srv://${DEV_NAME}:${DEV_PASS}@${DEV_CLUSTER}/${DB}`;
-    break;
+  case 'local':
+    MONGO_URI = `${MONGODB_LOCAL_URL}/${DB}`
+    break
+  case 'dev':
+    MONGO_URI = `mongodb+srv://${DEV_NAME}:${DEV_PASS}@${DEV_CLUSTER}/${DB}`
+    break
   default:
-    logger.log("error", "Unrecognized environment");
+    logger.log('error', 'Unrecognized environment')
 }
 
 const mongoStart = () => {
-  logger.log("info", `Connecting to MongoDB using URI ${MONGO_URI}`);
+  logger.log('info', `Connecting to MongoDB using URI ${MONGO_URI}`)
 
   mongo.connect(MONGO_URI, {
     useCreateIndex: true,
     useNewUrlParser: true,
     useFindAndModify: false,
-  });
+  })
 
-  mongo.connection.once("connected", () =>
-    logger.log("info", "MongoDB connection established successfully")
-  );
+  mongo.connection.once('connected', () =>
+    logger.log('info', 'MongoDB connection established successfully')
+  )
 
-  mongo.connection.on("error", (error) =>
-    logger.log("error", "MongoDB connection error: ", error)
-  );
-};
+  mongo.connection.on('error', (error) => logger.log('error', 'MongoDB connection error: ', error))
+}
 
-export default mongoStart;
+export default mongoStart

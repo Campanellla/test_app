@@ -1,19 +1,16 @@
+#import '../fragment/User/info.graphql'
+#import '../fragment/TimeSlot.graphql'
+#import '../fragment/Voucher/normal.graphql'
+
 mutation MakeOrder($input: makeOrderInput!) {
   makeOrder(input: $input) {
     id
-    voucher {
-      id
-      owner {
-        id
-      }
-      name
-      price
-      variant
-      quantity
-    }
     amount
+    voucher {
+      ...voucher
+    }
     buyer {
-      id
+      ...user_info
     }
   }
 }

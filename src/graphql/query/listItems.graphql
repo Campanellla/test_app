@@ -1,13 +1,13 @@
-#import "../fragment/Appartment.graphql"
-#import "../fragment/Voucher.graphql"
+#import "../fragment/Appartment/info.graphql"
+#import "../fragment/Voucher/info.graphql"
 
 query ListItems($sort: String) {
   listItems(sort: $sort) {
     appartment {
-      ...appartment
+      ...appartment_info
     }
     voucher {
-      ...voucher
+      ...voucher_info
     }
   }
 }

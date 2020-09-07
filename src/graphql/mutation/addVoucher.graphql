@@ -1,7 +1,7 @@
-#import '../fragment/Voucher.graphql'
+#import '../fragment/Voucher/owned.graphql'
 
 mutation AddVoucher($input: addVoucherInput!) {
   addVoucher(input: $input) {
-    ...voucher
+    ...voucher_owned
   }
 }

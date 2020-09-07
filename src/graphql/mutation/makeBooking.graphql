@@ -1,14 +1,18 @@
+#import '../fragment/User/info.graphql'
+#import '../fragment/TimeSlot.graphql'
+#import '../fragment/Appartment/normal.graphql'
+
 mutation MakeBooking($input: makeBookingInput!) {
   makeBooking(input: $input) {
     id
     appartment {
-      id
+      ...appartment
     }
     timeSlot {
-      id
+      ...timeslot
     }
     buyer {
-      id
+      ...user_info
     }
   }
 }

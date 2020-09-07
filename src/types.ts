@@ -16,6 +16,7 @@ export type Query = {
   getAppartment?: Maybe<Appartment>;
   getVoucher?: Maybe<Voucher>;
   getBooking?: Maybe<Booking>;
+  getOrder?: Maybe<Order>;
   getBookings?: Maybe<Array<Maybe<Booking>>>;
   getOrders?: Maybe<Array<Maybe<Order>>>;
   listAppartments?: Maybe<Array<Maybe<Appartment>>>;
@@ -23,6 +24,7 @@ export type Query = {
   listBookings?: Maybe<Array<Maybe<Booking>>>;
   listOrders?: Maybe<Array<Maybe<Order>>>;
   listItems?: Maybe<Array<Maybe<Item>>>;
+  getAdminReport?: Maybe<Array<Maybe<ReportItem>>>;
 };
 
 
@@ -45,6 +47,12 @@ export type QueryGetBookingArgs = {
 
 
 /** ------> QUERIES HERE */
+export type QueryGetOrderArgs = {
+  id: Scalars['ID'];
+};
+
+
+/** ------> QUERIES HERE */
 export type QueryGetBookingsArgs = {
   id?: Maybe<Scalars['ID']>;
 };
@@ -57,7 +65,25 @@ export type QueryGetOrdersArgs = {
 
 
 /** ------> QUERIES HERE */
+export type QueryListBookingsArgs = {
+  id?: Maybe<Scalars['ID']>;
+};
+
+
+/** ------> QUERIES HERE */
+export type QueryListOrdersArgs = {
+  id?: Maybe<Scalars['ID']>;
+};
+
+
+/** ------> QUERIES HERE */
 export type QueryListItemsArgs = {
+  sort?: Maybe<Scalars['String']>;
+};
+
+
+/** ------> QUERIES HERE */
+export type QueryGetAdminReportArgs = {
   sort?: Maybe<Scalars['String']>;
 };
 
@@ -266,6 +292,12 @@ export type Item = {
   __typename?: 'Item';
   appartment?: Maybe<Appartment>;
   voucher?: Maybe<Voucher>;
+};
+
+export type ReportItem = {
+  __typename?: 'ReportItem';
+  rooms?: Maybe<Scalars['Int']>;
+  unbooked?: Maybe<Scalars['Int']>;
 };
 
 /** ------> auth JWT token */

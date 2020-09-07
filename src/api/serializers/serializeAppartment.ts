@@ -1,36 +1,27 @@
-import { User, TimeSlot } from "../models";
-import serializeTimeSlot from "./serializeTimeSlot";
-import serializeUser from "./serializeUser";
+import mongoose from 'mongoose'
 
-const serializeAppartment = async (appartmentDocument, options = {}) => {
-  const { onlyInfo } = options;
+import serializeTimeSlot from './serializeTimeSlot'
+import serializeUser from './serializeUser'
+import serializeArray from './serializeArray'
 
-  const appartment = appartmentDocument.toObject({ versionKey: false });
+import toObject from './toObject'
 
-  appartment.id = appartment._id;
-  delete appartment._id;
+import { Appartment as AppartmentType } from '../../types'
 
-  if (onlyInfo) {
-    appartment.timeSlots = appartment.timeSlots.map((id) => ({ id }));
-    appartment.owner = { id: appartment.owner };
-    return appartment;
-  }
+const serializeAppartment = (
+  _appartment: mongoose.Document | AppartmentType | mongoose.Types.ObjectId | string
+) => {
+  if (typeof _appartment === 'string') return { id: _appartment }
+  if (_appartment instanceof mongoose.Types.ObjectId) return { id: String(_appartment) }
 
-  const _owner = await User.findById(appartment.owner);
+  const appartment = toObject(_appartment as mongoose.Document | AppartmentType)
 
-  appartment.owner = await serializeUser(_owner, { onlyInfo: true });
+  if (appartment.owner) appartment.owner = serializeUser(appartment.owner)
 
-  const _timeSlots = await TimeSlot.find({
-    _id: { $in: appartment.timeSlots },
-  });
+  if (appartment.timeSlots)
+    appartment.timeSlots = serializeArray(appartment.timeSlots, serializeTimeSlot)
 
-  const timeSlots = _timeSlots.map((slot) =>
-    serializeTimeSlot(slot, { onlyInfo: true })
-  );
+  return appartment
+}
 
-  appartment.timeSlots = timeSlots;
-
-  return appartment;
-};
-
-export default serializeAppartment;
+export default serializeAppartment

@@ -1,0 +1,24 @@
+#import '../Appartment/normal.graphql'
+#import '../Voucher/normal.graphql'
+#import '../Booking.graphql'
+#import '../Order.graphql'
+
+fragment user_full on User {
+  id
+  type
+  firstName
+  lastName
+  email
+  appartments {
+    ...appartment
+  }
+  vouchers {
+    ...voucher
+  }
+  bookings {
+    ...booking
+  }
+  orders {
+    ...order
+  }
+}

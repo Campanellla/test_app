@@ -34,4 +34,5 @@ const schema = new mongoose.Schema({
 
 schema.index({ '$**': 'text' })
 
-export const User = mongoose.models.User || mongoose.model('User', schema)
+export const User =
+  (mongoose.models.User as mongoose.Model<mongoose.Document, {}>) || mongoose.model('User', schema)

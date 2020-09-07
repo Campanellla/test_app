@@ -1,7 +1,7 @@
-#import '../fragment/Appartment.graphql'
+#import '../fragment/Appartment/owned.graphql'
 
 mutation EditAppartment($input: editAppartmentInput!) {
   editAppartment(input: $input) {
-    ...appartment
+    ...appartment_owned
   }
 }

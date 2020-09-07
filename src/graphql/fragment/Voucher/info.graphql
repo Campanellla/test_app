@@ -1,0 +1,7 @@
+fragment voucher_info on Voucher {
+  id
+  name
+  price
+  variant
+  quantity
+}

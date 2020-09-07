@@ -1,19 +1,24 @@
-import { User } from "../models";
-import { serializeUser } from "../serializers";
+import { User } from '../models'
+import { User as UserType } from '../../types'
+
+import mongoose from 'mongoose'
+
+import { serializeUser } from '../serializers'
 
 const context = async ({ req }) => {
-  let user = null;
+  let user = null
+
   try {
-    const { authorization } = req.headers;
+    const { authorization } = req.headers
 
     //// JWT CHECK HERE
 
-    const userBySub = await User.findOne({ userSub: authorization });
+    const userBySub = await User.findOne({ userSub: authorization })
 
-    user = await serializeUser(userBySub, { onlyInfo: false });
+    user = serializeUser(userBySub)
   } catch (error) {}
 
-  return { user };
-};
+  return { user }
+}
 
-export default context;
+export default context

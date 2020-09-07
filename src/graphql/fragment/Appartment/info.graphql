@@ -1,0 +1,8 @@
+fragment appartment_info on Appartment {
+  id
+  name
+  description
+  image
+  price
+  rooms
+}

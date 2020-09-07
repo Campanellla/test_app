@@ -22,14 +22,65 @@ const listItems = async (_, args) => {
     param = 'name',
   } = sorting
 
-  const _vouchers = type === 'appartments' ? [] : await Voucher.find({})
-  const _appartments = type === 'vouchers' ? [] : await Appartment.find({})
+  const _vouchers =
+    type === 'appartments'
+      ? []
+      : await Voucher.aggregate([
+          {
+            $lookup: {
+              from: 'vouchers',
+              localField: 'vouchers',
+              foreignField: '_id',
+              as: 'vouchers',
+            },
+          },
+          {
+            $lookup: {
+              from: 'users',
+              localField: 'owner',
+              foreignField: '_id',
+              as: 'owner',
+            },
+          },
+          {
+            $unwind: {
+              path: '$owner',
+            },
+          },
+        ])
+
+  const _appartments =
+    type === 'vouchers'
+      ? []
+      : await Appartment.aggregate([
+          {
+            $lookup: {
+              from: 'appartments',
+              localField: 'appartments',
+              foreignField: '_id',
+              as: 'appartments',
+            },
+          },
+          {
+            $lookup: {
+              from: 'users',
+              localField: 'owner',
+              foreignField: '_id',
+              as: 'owner',
+            },
+          },
+          {
+            $unwind: {
+              path: '$owner',
+            },
+          },
+        ])
 
   const promisesV = _vouchers.map((voucher) => serializeVoucher(voucher))
   const promisesA = _appartments.map((app) => serializeAppartment(app))
 
-  const vouchers = type === 'appartments' ? ([] as unknown[]) : await Promise.all(promisesV)
-  const appartments = type === 'vouchers' ? ([] as unknown[]) : await Promise.all(promisesA)
+  const vouchers = type === 'appartments' ? ([] as unknown[]) : promisesV
+  const appartments = type === 'vouchers' ? ([] as unknown[]) : promisesA
 
   let items: ({ appartment: any; voucher: null } | { voucher: any; appartment: null })[] = [
     ...vouchers.map((voucher: any) => ({ voucher, appartment: null })),

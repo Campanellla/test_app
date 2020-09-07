@@ -1,0 +1,10 @@
+fragment voucher_owned on Voucher {
+  id
+  owner {
+    id
+  }
+  name
+  price
+  variant
+  quantity
+}

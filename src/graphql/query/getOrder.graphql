@@ -1,17 +1,7 @@
+#import '../fragment/Order.graphql'
+
 query GetOrder($id: ID!) {
   getOrder(id: $id) {
-    id
-    voucher {
-      id
-      name
-      variant
-      price
-    }
-    amount
-    buyer {
-      id
-      firstName
-      lastName
-    }
+    ...order
   }
 }
